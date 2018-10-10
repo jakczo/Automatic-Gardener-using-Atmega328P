@@ -7,25 +7,25 @@ Below I place a copy of the final report (in Polish language) containing all the
 
 ## Spis treści:
 
-### 1. [Założenia i funkcjonalność projektu](#-1-temat-projektu-): 
+### 1. [Założenia i funkcjonalność projektu](#-1-za%C5%82o%C5%BCenia-i-funkcjonalno%C5%9B%C4%87-projektu-): 
 
-### 2. [Użyte elementy i problematyka](#-2-specyfikacja-wewn%C4%99trzna-):
+### 2. [Użyte elementy i problematyka](#-2-u%C5%BCyte-elementy-i-problematyka-):
 
-### 3. [Specyfikacja wewnętrzna](#-3-specyfikacja-zewn%C4%99trzna-programu-):
-   - [Schemat blokowy algorytmu działania urządzenia](#opis-zasady-dzia%C5%82ania-algorytmu-levenshteina-krok-po-kroku) 
-   - [Opis zmiennych w programie](#analiza-zadania-modyfikacja-algorytmu-uzasadnienie)
-   - [Opis funkcji w programie](#za%C5%82o%C5%BCenia-projektowe)
-   - [Szczegółowy opis wybranej funkcji](#funkcjonalno%C5%9B%C4%87-programu)
+### 3. [Specyfikacja wewnętrzna](#-3-specyfikacja-wewn%C4%99trzna-):
+   - [Schemat blokowy algorytmu działania urządzenia](#schemat-blokowy-algorytmu-dzia%C5%82ania-urz%C4%85dzenia) 
+   - [Opis zmiennych globalnych w programie](#opis-zmiennych-globalnych-w-programie)
+   - [Opis funkcji w programie](#opis-funkcji-w-programie)
+   - [Szczegółowy opis wybranej funkcji](#szczeg%C3%B3%C5%82owy-opis-wybranej-funkcji--ekran-g%C5%82%C3%B3wny)
 
-### 4. [Specyfikacja zewnętrzna](#-4-uruchamianie-i-testowanie-):
-   - [Szczegółowy opis użytych elementów](#testowanie)
-   - [Skrócona instrukcja obsługi urządzenia](#wyniki-czasowe)
+### 4. [Specyfikacja zewnętrzna](#-4-specyfikacja-zewn%C4%99trzna-):
+   - [Szczegółowy opis użytych elementów](#szczeg%C3%B3%C5%82owy-opis-u%C5%BCytych-element%C3%B3w)
+   - [Skrócona instrukcja obsługi urządzenia](#skr%C3%B3cona-instrukcja-obs%C5%82ugi-urz%C4%85dzenia)
 
-### 5. [Montaż i wtórna analiza](#-5-analiza-dzia%C5%82ania-programu-)
+### 5. [Montaż i wtórna analiza](#-5-monta%C5%BC-i-wt%C3%B3rna-analiza-)
 
-### 6. [Kod źródłowy](#-6-wnioski-)
+### 6. [Kod źródłowy](#-6-kod-%C5%BAr%C3%B3d%C5%82owy-)
 
-### 7. [Wnioski i testowanie](#-7-wnioski-)
+### 7. [Wnioski i testowanie](#-7-wnioski-i-testowanie-)
 
 ## <p align="center"> 1. Założenia i funkcjonalność projektu </p>
 
@@ -249,6 +249,8 @@ Ostatnim elementem układu jest przycisk. Z jednej strony podłączony jest do 5
 
 ## <p align="center"> 6. Kod źródłowy </p>
 
+Komentarze do poszczególnych linii kodu znajdują się w folderze z projektem.
+
 ```C++
 
 /*Begining of Auto generated code by Atmel studio */
@@ -261,8 +263,7 @@ Ostatnim elementem układu jest przycisk. Z jednej strony podłączony jest do 5
 #include "DS3231.h"
 //Beginning of Auto generated function prototypes by Atmel Studio
 //End of Auto generated function prototypes by Atmel Studio
-#ifndef F_CPU																              // if F_CPU was not defined in Project -> Properties
-#define F_CPU 16000000UL													        // define it now as 16 MHz unsigned long
+#ifndef F_CPU // if F_CPU was not defined in Project -> Properties								#define F_CPU 16000000UL // define it now as 16 MHz unsigned long
 #endif
 
 /*FUNCTIONS*/
@@ -278,51 +279,50 @@ void waterSensorFunction();
 void motorRelayFunction();
 
 /*LCD*/
-const int rs = 12, en = 11, d4 = 5, d5 = 4, d6 = 3, d7 = 2;					//lcd pinouts to atmega ports
-LiquidCrystal lcd(rs, en, d4, d5, d6, d7);									        //lcd variable
+const int rs = 12, en = 11, d4 = 5, d5 = 4, d6 = 3, d7 = 2;					
+LiquidCrystal lcd(rs, en, d4, d5, d6, d7);									       
 /*RTC*/
-DS3231 clock;																                        //RTC variable
-RTCDateTime dt;																                      //date and time format variable
+DS3231 clock;																                        
+RTCDateTime dt;																                      
 /*MS*/
-const int atmegaPinoutMoistureSensorAnalogPin = A0;							    //moisture sensor analog pin
-const int atmegaPinoutMoistureSensorVcc = 8;								        //moisture sensor vcc
-int moistureSensorValue = 0;												                //value measured by moisture sensor
-float moistureSensorValuePercentage = 0;									          //value measured by moisture sensor but in percentage
+const int atmegaPinoutMoistureSensorAnalogPin = A0;							   
+const int atmegaPinoutMoistureSensorVcc = 8;								        
+int moistureSensorValue = 0;												                
+float moistureSensorValuePercentage = 0;									          
 /*WS*/
-const int atmegaPinoutWaterSensorAnalogPin = A1;							      //water sensor analog pin
-const int atmegaPinoutWaterSensorVcc = 7;									          //water sensor vcc
-int waterSensorValue = 0;													                  //value measured by water sensor
+const int atmegaPinoutWaterSensorAnalogPin = A1;							      
+const int atmegaPinoutWaterSensorVcc = 7;									          
+int waterSensorValue = 0;													                  
 /*RELAY*/
-const int atmegaPinoutRelayIn = 6;											            //relay input signal pinout (in the water pump circuit)
+const int atmegaPinoutRelayIn = 6;											            
 /*DIODE*/
-const int atmegaPinoutDiodeAnode = 9;										            //diode
+const int atmegaPinoutDiodeAnode = 9;										            
 /*BUTTON*/
-const int atmegaPinoutButton = 13;											            //button
-long double buttonUseTime = 0;												              //time of button being used [ms]
+const int atmegaPinoutButton = 13;											            
+long double buttonUseTime = 0;												              
 /*OTHER*/
-int presentTime = 0;														                    //present time [s]
-int lastTest = 0;															                      //time of last check of the sensors [s]
-const int sensorsInterval = 14;												              //time interval (which is one loop) between measurements [s]
-const int diodeCounter = 6;													                //diode loop counter
-const int thresholdNo1 = 100;												                //time threshold of entering into viewNo1 [ms]
-const int thresholdNo2 = 2000;												              //time threshold of entering into viewNo2 [ms]
-RTCDateTime lastWatering;													                  //date and time of the last watering
-RTCDateTime lastRefilling;													                //date and time of the last refilling
+int presentTime = 0;														                    
+int lastTest = 0;								
+const int sensorsInterval = 14;												              
+const int diodeCounter = 6;													                
+const int thresholdNo1 = 100;
+const int thresholdNo2 = 2000;		
+RTCDateTime lastWatering;	
+RTCDateTime lastRefilling;	
 
 void setup() {
 	clock.begin();
 	clock.setDateTime(__DATE__, __TIME__);
-	pinMode(atmegaPinoutMoistureSensorVcc, OUTPUT);							      //setting digital pin No. 8 as output
-	pinMode(atmegaPinoutWaterSensorVcc, OUTPUT);							        //setting digital pin No. 7 as output
-	pinMode(atmegaPinoutRelayIn, OUTPUT);									            //setting digital pin No. 6 as output
-	pinMode(atmegaPinoutDiodeAnode, OUTPUT);								          //setting digital pin No. 9 as output
-	pinMode(atmegaPinoutMoistureSensorAnalogPin, INPUT);					    //setting analog pin No. A0 as input
-	pinMode(atmegaPinoutWaterSensorAnalogPin, INPUT);						      //setting analog pin No. A1 as input
-	pinMode(atmegaPinoutButton, INPUT);										            //setting digital pin No. 13 as input
-	digitalWrite(atmegaPinoutRelayIn, HIGH);								          //pin state is low as default, but it triggers relay... 
-                                                                    //...so we set it as high to prevent that
-	lcd.begin(16, 2);														                      //setting lcd
-	lcd.clear();															                        //clearing (just in case)
+	pinMode(atmegaPinoutMoistureSensorVcc, OUTPUT);							     
+	pinMode(atmegaPinoutWaterSensorVcc, OUTPUT);							    
+	pinMode(atmegaPinoutRelayIn, OUTPUT);									            
+	pinMode(atmegaPinoutDiodeAnode, OUTPUT);	
+	pinMode(atmegaPinoutMoistureSensorAnalogPin, INPUT);	
+	pinMode(atmegaPinoutWaterSensorAnalogPin, INPUT);	
+	pinMode(atmegaPinoutButton, INPUT);		
+	digitalWrite(atmegaPinoutRelayIn, HIGH);	
+	lcd.begin(16, 2);
+	lcd.clear();
 	delay(100);
 	lcd.setCursor(2, 0);
 	lcd.print("Automatyczny");
@@ -377,9 +377,9 @@ void moistureSensorFunction() {
 	digitalWrite(atmegaPinoutMoistureSensorVcc, LOW);
 
 	if (moistureSensorValue <= 60) {
-		moistureSensorValue = 0;														 //sensor calibration - measurement error of size 60 (value starts at 0)
+		moistureSensorValue = 0;											
 	} else if (moistureSensorValue >= 620) {
-		moistureSensorValue = 720;													 //sensor calibration - measurement error of size 60 (value ends at 740)
+		moistureSensorValue = 720;										
 	}
 	moistureSensorValuePercentage = ((float)moistureSensorValue / 720) * 100;
 }
@@ -393,12 +393,12 @@ void waterSensorFunction() {
 }
 
 void considerData() {
-	if (moistureSensorValuePercentage < 31) {											//if soil is dry
-		if (waterSensorValue > 220) {													      //there is water in the container
+	if (moistureSensorValuePercentage < 31) {										
+		if (waterSensorValue > 220) {											
 			motorRelayFunction();
 			lastWatering = clock.getDateTime();
 			moistureSensorFunction();
-		} else {																		                //there is no water in the container
+		} else {													
 			do {
 				for (int i = 0; i < diodeCounter; ++i) {
 					lcd.clear();
@@ -418,8 +418,7 @@ void considerData() {
 			lastRefilling = clock.getDateTime();
 			moistureSensorFunction();
 	  }
-  } else if (moistureSensorValuePercentage >= 31 && waterSensorValue <= 220) {	//if soil is moist...
-                                                                                //...but there is no water in the container
+  } else if (moistureSensorValuePercentage >= 31 && waterSensorValue <= 220) {
 		do {
 			for (int i = 0; i < diodeCounter; ++i) {
 				lcd.clear();
