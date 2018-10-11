@@ -2,6 +2,11 @@
 C/C++ language program for specified device (based on the Atmega328P microprocessor) that takes basic care of plants.
 Below I place a copy of the final report (in Polish language) containing all the information about the Automatic Gardener project.
 
+* Atmel Studio 7 + USBAsp programmer (as an external tool): -e -P usb -c usbasp -p ATmega328P -e -U flash:w:$(ProjectDir)Debug\$(TargetName).hex:i
+* AVRDude (cmd): avrdude -c usbasp -p atmega328p
+* Fuse Bits (default): -U lfuse:w:0x62:m -U hfuse:w:0xD9:m -U efuse:w:0xFF:m -U lock:w:0xFF:m
+* Fuse Bits (16MHz external full-swing crystal): -U lfuse:w:0xF7:m -U hfuse:w:0xD9:m -U efuse:w:0xFF:m -U lock:w:0xFF:m
+* Changing fuse bits via AVRDude: avrdude -c usbasp -p atmega328p -U lfuse:w:0xF7:m
 
 # <p align="center"> Automatyczny ogrodnik </p>
 
@@ -177,7 +182,7 @@ void vievDefault() {
 
 ![Alt text](images/2.png?raw=true "Wyjścia mikroprocesora Atmega328P (powyższy schemat 168 jest kompatybilny z 328) – źródło: arduino.cc/en/Hacking/PinMapping168")
 
-Mikroprocesor Atmega328P oferuje szeroką gamę bibliotek i jest stosunkowo łatwy w programowaniu. W projekcie wykorzystałem jego wyjścia analogowe ADC0 i ADC1 do pobierania próbek w pomiarach, cyfrowe PB5, PB4, PB3, PB1, PB0, PD7, PD6, PD5, PD4, PD3 i PD2 do obsługi elementów oraz magistralę I2C, czyli wyjścia ADC4/SDA i ADC5/SCL do komunikacji z modułem RTC. Do zaprogramowania Atmegi wykorzystałem programator USBASP oraz środowisko programistyczne Atmel Studio 7. Przed wgraniem programu zmieniłem fusebity Atmegi tak, aby działa na zewnętrznym kwarcu o częstotliwości 16MHz (fabrycznie Atmega miała taktowanie 1MHz, gdzie do tego wykorzystywała wewnętrzny kwarc 8MHz i fusebit CKDIV8 (divide clock by 8 internally). Do zmiany fusebitów wykorzystałem program AvrDude, wykorzystując polecenie avrdude –c usbasp –p atmega328p -U lfuse:w:0xF3:m, przeprogramowując tylko rejestr LOW (pozostałe – HIGH, EXTENDED oraz LOCKBIT pozostawiając nienaruszone). Układ zasilany jest powerbankiem o pojemności 2200mAh i napięciu wyjściowym 5V.
+Mikroprocesor Atmega328P oferuje szeroką gamę bibliotek i jest stosunkowo łatwy w programowaniu. W projekcie wykorzystałem jego wyjścia analogowe ADC0 i ADC1 do pobierania próbek w pomiarach, cyfrowe PB5, PB4, PB3, PB1, PB0, PD7, PD6, PD5, PD4, PD3 i PD2 do obsługi elementów oraz magistralę I2C, czyli wyjścia ADC4/SDA i ADC5/SCL do komunikacji z modułem RTC. Do zaprogramowania Atmegi wykorzystałem programator USBASP oraz środowisko programistyczne Atmel Studio 7. Przed wgraniem programu zmieniłem fusebity Atmegi tak, aby działa na zewnętrznym kwarcu o częstotliwości 16MHz (fabrycznie Atmega miała taktowanie 1MHz, gdzie do tego wykorzystywała wewnętrzny kwarc 8MHz i fusebit CKDIV8 (divide clock by 8 internally). Do zmiany fusebitów wykorzystałem program AvrDude, wykorzystując polecenie avrdude –c usbasp –p atmega328p -U lfuse:w:0xF7:m, przeprogramowując tylko rejestr LOW (pozostałe – HIGH, EXTENDED oraz LOCKBIT pozostawiając nienaruszone). Układ zasilany jest powerbankiem o pojemności 2200mAh i napięciu wyjściowym 5V.
 
 ![Alt text](images/3.png?raw=true "Czujnik wilgotności FC-28 – źródło: abc-rc.pl/arduino-fc-28")
 
