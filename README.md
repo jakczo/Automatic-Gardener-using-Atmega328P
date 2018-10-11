@@ -6,7 +6,7 @@ Below I place a copy of the final report (in Polish language) containing all the
 * AVRDude (cmd): avrdude -c usbasp -p atmega328p
 * Fuse Bits (default): -U lfuse:w:0x62:m -U hfuse:w:0xD9:m -U efuse:w:0xFF:m -U lock:w:0xFF:m
 * Fuse Bits (16MHz external full-swing crystal): -U lfuse:w:0xF7:m -U hfuse:w:0xD9:m -U efuse:w:0xFF:m -U lock:w:0xFF:m
-* Changing fuse bits via AVRDude: avrdude -c usbasp -p atmega328p -U lfuse:w:0xF7:m
+* Changing fuse bits via USBAsp with AVRDude: avrdude -c usbasp -p atmega328p -U lfuse:w:0xF7:m
 
 # <p align="center"> Automatyczny ogrodnik </p>
 
